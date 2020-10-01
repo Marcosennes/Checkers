@@ -1,4 +1,5 @@
 import pygame
+import PPlay
 pygame.font.init()
 
 try:
@@ -17,16 +18,17 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Jogo de Dama")
 
 #Carregamento do background
-background = pygame.image.load("assets/images/background.jpg")
+background = pygame.image.load("assets/images/background_alternativo.png")
 
 
 while LOOP:
-
+    
     screen.fill((0, 0, 0))
     screen.blit(background, (0, 0))
-    pygame.draw.rect(screen, (0, 0, 0), [40, 40, 60, 60])
+    #pygame.draw.rect(screen, (0, 0, 0), [40, 40, 60, 60])
 
     for event in pygame.event.get():
+        print(event)
         if event.type == pygame.QUIT:
             LOOP = False
 
