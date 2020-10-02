@@ -1,5 +1,7 @@
 import pygame
 import PPlay
+from Tabuleiro import *
+
 pygame.font.init()
 
 try:
@@ -7,8 +9,8 @@ try:
 except:
     print("O módulo não foi inicializado com sucesso.")
 
-WIDTH   = 600
-HEIGHT  = 600
+WIDTH   = 480
+HEIGHT  = 480
 LOOP    = True
 
 #Define a janela
@@ -17,8 +19,14 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 #Título
 pygame.display.set_caption("Jogo de Dama")
 
+#Cria o objeto Tabuleiro
+tabuleiro = Tabuleiro(480,480)
+tabuleiro.atribui_casas()
+tabuleiro.verifica_casa(124,324)
+# tabuleiro.printa_vetor()
+
 #Carregamento do background
-background = pygame.image.load("assets/images/background_alternativo.png")
+background = pygame.image.load("assets/images/background.png")
 
 
 while LOOP:
