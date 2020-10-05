@@ -49,30 +49,6 @@ class Tabuleiro:
                 print(cont)
                 print(self.tabuleiro[i][j])
                 cont += 1
-    
-    #Verifica qual casa foi clicada pelo mouse (Talvez apagar)
-    def verifica_casa(self, posicao_x, posicao_y):
-        
-        print(posicao_x, posicao_y)
-        for i in range(len(self.tabuleiro)):
-            for j in range(len(self.tabuleiro[i])):
-                if(posicao_x > self.tabuleiro[i][j][0] and posicao_x < self.tabuleiro[i][j][1] and  posicao_y > self.tabuleiro[i][j][2] and posicao_y < self.tabuleiro[i][j][3]):
-                    if(self.tabuleiro[i][j][4]):
-                        #self.tabuleiro[i][j][4].transforma_dama()#Somente para teste
-
-
-                        local_selecionado = self.seleciona_local(i+1, j+1, self.tabuleiro[i][j][4])
-                        if(local_selecionado):
-                            self.tabuleiro[i+1][j+1][4] = self.tabuleiro[i][j][4]
-
-                            self.tabuleiro[i][j][4] = None
-
-
-                    
-                    return self.tabuleiro[i][j]
-
-    #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------#
-
 
     #Movimenta a peca no tabuleiro
     def movimenta(self, peca, x, y):
@@ -109,9 +85,9 @@ class Tabuleiro:
         background = pygame.image.load("assets/images/background.png")
         janela.blit(background, (0, 0))
         
-        for i in range(self.linhas):
-            for j in range(self.colunas):
-                peca = self.tabuleiro[i][j][4]
+        for i in range(self.colunas):
+            for j in range(self.linhas):
+                peca = self.pega_peca(i, j)
 
                 if(peca != None):
                     peca.desenha_peca(janela)
@@ -119,23 +95,103 @@ class Tabuleiro:
     #Verifica o vencedor
     def vencedor(self):
         if(self.peca1 <= 0):
-            return (255, 0, 0)
+            return (0, 0, 0)
         
         elif(self.peca2 <=0):
-            return (0, 0, 0)
+            return (255, 0, 0)
         
         elif(self.peca1 == 1 and self.peca2 == 1):
             return (128,128,128) #Empate
 
-    
-    def valida_movimento(self, peca):
-        movimentos = peca.movimentos_valido()
+        return None
 
-        for i in range(len(movimentos)):
-            if(self.tabuleiro[movimentos[i]][4]):
-                if(self.tabuleiro[movimentos[i]][4].cor != peca.cor):
-                    movimentos[i] = [movimentos[i][0]+1, movimentos[i][1] + 1]
+
+    def remove(self, pecas):
+        for peca in pecas:
+            self.tabuleiro[peca.posicao[0]][peca.posicao[1]][4] = None
+            if(peca):
+                if(peca.cor == (255,0,0)):
+                    self.peca1 -= 1
                 else:
-                    movimentos[i].remove()
+                    self.peca2 -= 1
+
+    def pega_movimentos_validos(self, peca):
+        movimentos = {}
+        esquerda = peca.posicao[0] - 1
+        direita = peca.posicao[0] + 1
+        linha = peca.posicao[1]
+
+        if(peca.cor == (255,0,0) or peca.dama):
+            movimentos.update(self._diagonal_esquerda(linha + 1, min(linha + 3, LINHA), 1, peca.cor, esquerda))
+            movimentos.update(self._diagonal_direita(linha + 1, min(linha + 3, LINHA), 1, peca.cor, direita))
+        if(peca.cor == (255,255,255) or peca.dama):
+            movimentos.update(self._diagonal_esquerda(linha - 1, max(linha - 3, -1), -1, peca.cor, esquerda))
+            movimentos.update(self._diagonal_direita(linha - 1, max(linha - 3, -1), -1, peca.cor, direita))
+        
+        return movimentos
+
+    def _diagonal_esquerda(self, inicio, parada, passo, cor, esquerda, pulo=[]):
+        movimentos = {}
+        ultimo = []
+        for r in range(inicio, parada, passo):
+            if esquerda < 0:
+                break
             
+            atual = self.pega_peca(esquerda, r)
+            if not atual:
+                if pulo and not ultimo:
+                    break
+                elif pulo:
+                    movimentos[(esquerda, r)] = ultimo + pulo
+                else:
+                    movimentos[(esquerda, r)] = ultimo
+                
+                if ultimo:
+                    if passo == -1:
+                        linha = max(r-3, 0)
+                    else:
+                        linha = min(r+r, LINHA)
+                    movimentos.update(self._diagonal_esquerda(r+passo, linha, passo, cor, esquerda-1, pulo=ultimo))
+                    movimentos.update(self._diagonal_direita(r+passo, linha, passo, cor, esquerda+1, pulo=ultimo))
+                break
+            elif atual.cor == cor:
+                break
+            else:
+                ultimo = [atual]
+
+            esquerda -= 1
+        
+        return movimentos
+
+    def _diagonal_direita(self, inicio, parada, passo, cor, direita, pulo=[]):
+        movimentos = {}
+        ultimo = []
+        for r in range(inicio, parada, passo):
+            if direita >= COLUNA:
+                break
+            
+            atual = self.pega_peca(direita, r)
+            if not atual:
+                if pulo and not ultimo:
+                    break
+                elif pulo:
+                    movimentos[(direita, r)] = ultimo + pulo
+                else:
+                    movimentos[(direita, r)] = ultimo
+                
+                if ultimo:
+                    if passo == -1:
+                        linha = max(r-3, 0)
+                    else:
+                        linha = min(r+r, LINHA)
+                    movimentos.update(self._diagonal_esquerda(r+passo, linha, passo, cor, direita-1,pulo=ultimo))
+                    movimentos.update(self._diagonal_direita(r+passo, linha, passo, cor, direita+1,pulo=ultimo))
+                break
+            elif atual.cor == cor:
+                break
+            else:
+                ultimo = [atual]
+
+            direita += 1
+        
         return movimentos

@@ -40,14 +40,4 @@ class Peca(pygame.sprite.Sprite):
 
         return False
 
-    def movimentos_validos(self):
-        if(not self.dama):
-            return [[self.x + direcao, self.y - direcao], 
-                    [self.x + direcao, self.y + direcao]]
-        else:
-            return [[self.x + direcao, self.y - direcao], 
-                    [self.x + direcao, self.y + direcao]] #Modificar
 
-
-    def __repr__(self):
-        return str(self.cor)
