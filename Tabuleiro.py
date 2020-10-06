@@ -14,7 +14,6 @@ class Tabuleiro:
         self.peca1 = self.peca2 = 12
         self.dama1 = self.dama2 = 0
 
-
     #Atribui a cada sua posição em px
     def atribui_casas(self):
         for i in range(self.colunas):
@@ -31,10 +30,10 @@ class Tabuleiro:
                 y_final     = self.altura/8     + (j*self.altura/8)
 
                 if(j < 3 and coloca_peca):               
-                    linha.append([x_inicial, x_final, y_inicial, y_final, Peca( (255, 0, 0), [i, j], LINHA-1, 1)])
+                    linha.append([x_inicial, x_final, y_inicial, y_final, Peca(VERMELHO, [i, j], LINHA-1, 1)])
                     coloca_peca = not(coloca_peca)
                 elif(j > 4 and coloca_peca):
-                    linha.append([x_inicial, x_final, y_inicial, y_final, Peca( (255, 255, 255), [i, j], 0, -1) ])
+                    linha.append([x_inicial, x_final, y_inicial, y_final, Peca(BRANCO, [i, j], 0, -1) ])
                     coloca_peca = not(coloca_peca)
                 else:
                     linha.append([x_inicial, x_final, y_inicial, y_final, None])
@@ -88,31 +87,33 @@ class Tabuleiro:
         for i in range(self.colunas):
             for j in range(self.linhas):
                 peca = self.pega_peca(i, j)
-
                 if(peca != None):
                     peca.desenha_peca(janela)
+                    if(peca.morte):
+                        self.tabuleiro[peca.posicao[0]][peca.posicao[1]][4] = None
 
     #Verifica o vencedor
     def vencedor(self):
         if(self.peca1 <= 0):
-            return (0, 0, 0)
+            return BRANCO
         
         elif(self.peca2 <=0):
-            return (255, 0, 0)
+            return VERMELHO
         
         elif(self.peca1 == 1 and self.peca2 == 1):
             return (128,128,128) #Empate
 
         return None
 
-
+    # Remove a peça que foi comida
     def remove(self, pecas):
         for peca in pecas:
-            self.tabuleiro[peca.posicao[0]][peca.posicao[1]][4] = None
+            # self.tabuleiro[peca.posicao[0]][peca.posicao[1]][4] = None
             if(peca):
-                if(peca.cor == (255,0,0)):
+                peca.mata_peca()
+                if(peca.cor == VERMELHO):
                     self.peca1 -= 1
-                else:
+                elif(peca.cor == BRANCO):
                     self.peca2 -= 1
 
     def pega_movimentos_validos(self, peca):
@@ -121,10 +122,10 @@ class Tabuleiro:
         direita = peca.posicao[0] + 1
         linha = peca.posicao[1]
 
-        if(peca.cor == (255,0,0) or peca.dama):
+        if(peca.cor == VERMELHO or peca.dama):
             movimentos.update(self._diagonal_esquerda(linha + 1, min(linha + 3, LINHA), 1, peca.cor, esquerda))
             movimentos.update(self._diagonal_direita(linha + 1, min(linha + 3, LINHA), 1, peca.cor, direita))
-        if(peca.cor == (255,255,255) or peca.dama):
+        if(peca.cor == BRANCO or peca.dama):
             movimentos.update(self._diagonal_esquerda(linha - 1, max(linha - 3, -1), -1, peca.cor, esquerda))
             movimentos.update(self._diagonal_direita(linha - 1, max(linha - 3, -1), -1, peca.cor, direita))
         
