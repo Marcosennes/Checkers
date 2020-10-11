@@ -6,7 +6,7 @@ class Jogo:
     def __init__(self, janela, tabuleiro):
         self.selecionado = None
         self.tabuleiro = tabuleiro
-        self.turno = (255, 0, 0)
+        self.turno = VERMELHO
         self.movimentos_validos = {}
         self.janela = janela
     
@@ -18,15 +18,15 @@ class Jogo:
     def reseta(self):        
         self.selecionado = None
         self.tabuleiro = tabuleiro
-        self.turno = (255, 0, 0)
+        self.turno = VERMELHO
         self.movimentos_validos = {}
 
     def muda_turno(self):
         self.movimentos_validos = {}
-        if(self.turno == (255, 0, 0)):
-            self.turno = (255, 255, 255)
+        if(self.turno == VERMELHO):
+            self.turno = BRANCO
         else:
-            self.turno = (255, 0, 0)
+            self.turno = VERMELHO
 
     def seleciona(self, coluna, linha):
         self.coluna = coluna
@@ -35,6 +35,7 @@ class Jogo:
             resultado = self.movimenta(coluna, linha)
             if(not resultado):
                 self.selecionado = None
+                self.movimentos_validos = {}
                 self.seleciona(coluna, linha)
         
         peca = self.tabuleiro.pega_peca(coluna, linha)
@@ -52,7 +53,7 @@ class Jogo:
             self.tabuleiro.movimenta(self.selecionado, coluna, linha)
             pulo = self.movimentos_validos[(coluna, linha)]
             if(pulo):
-                self.tabuleiro.remove(pulo)
+                self.tabuleiro.mata_pecas(pulo)
             self.muda_turno()
         else:
             return False
