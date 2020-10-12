@@ -53,12 +53,11 @@ def main():
         else:
             tabuleiro.desenha_tabuleiro(janela)
             pygame.font.init()
-            print("asf")
             fonte = pygame.font.SysFont('Comic Sans MS', 30)
-            if(jogo.vencedor() == (255, 0, 0)):
+            if(jogo.vencedor() == VERMELHO):
                 texto = fonte.render("O Vermelho venceu!", True, (0,0,0))
                 janela.blit(texto, (WIDTH/3.5,HEIGHT/2.5))
-            elif(jogo.vencedor() == (0, 0, 0)):
+            elif(jogo.vencedor() == BRANCO):
                 texto = fonte.render("O Branco venceu!", True, (0,0,0))
                 janela.blit(texto, (WIDTH/3.5,HEIGHT/2.5))
             else:

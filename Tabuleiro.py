@@ -12,9 +12,9 @@ class Tabuleiro:
         self.colunas = COLUNA
 
         self.peca1 = self.peca2 = 12
-        self.dama1 = self.dama2 = 0
 
-    #Atribui a cada sua posição em px
+
+    #Coloca as peças nas casas
     def atribui_casas(self):
         for i in range(self.colunas):
             linha=[]
@@ -22,21 +22,15 @@ class Tabuleiro:
                 coloca_peca = True
             else:
                 coloca_peca = False
-
             for j in range(self.linhas):
-                x_inicial   = i*self.largura/8
-                x_final     = self.largura/8    + (i*self.largura/8)
-                y_inicial   = j*self.altura/8
-                y_final     = self.altura/8     + (j*self.altura/8)
-
                 if(j < 3 and coloca_peca):               
-                    linha.append([x_inicial, x_final, y_inicial, y_final, Peca(VERMELHO, [i, j], LINHA-1, 1)])
+                    linha.append(Peca(VERMELHO, [i, j], LINHA-1, 1))
                     coloca_peca = not(coloca_peca)
                 elif(j > 4 and coloca_peca):
-                    linha.append([x_inicial, x_final, y_inicial, y_final, Peca(BRANCO, [i, j], 0, -1) ])
+                    linha.append(Peca(BRANCO, [i, j], 0, -1) )
                     coloca_peca = not(coloca_peca)
                 else:
-                    linha.append([x_inicial, x_final, y_inicial, y_final, None])
+                    linha.append(None)
                     coloca_peca = not(coloca_peca)
 
             self.tabuleiro.append(linha)
@@ -57,7 +51,7 @@ class Tabuleiro:
 
     #Retorna a peça
     def pega_peca(self, coluna, linha):
-        return self.tabuleiro[coluna][linha][4]        
+        return self.tabuleiro[coluna][linha]      
 
     #Retorna em qual casa foi clicada
     def pega_casa(self, pos):
@@ -78,19 +72,34 @@ class Tabuleiro:
 
     #Desenha um tabuleiro na tela
     def desenha_tabuleiro(self, janela):
+        desenhou_peca_morta = False
+        for sprite in range(3):#3 por causa da animação da morte da peça
+            #Carregamento do background
+            janela.fill((0, 0, 0))
+            background = pygame.image.load("assets/images/background.png")
+            janela.blit(background, (0, 0))
+            
+            #desenha as peças vivas
+            for i in range(self.colunas):
+                for j in range(self.linhas):
+                    peca = self.pega_peca(i, j)
+                    if(peca != None and not peca.morte):
+                        peca.desenha_peca(janela)
+
+            #Desenha as peças mortas
+            for i in range(self.colunas):
+                for j in range(self.linhas):
+                    peca = self.pega_peca(i, j)
+                    if(peca != None and peca.morte): 
+                        peca.desenha_peca_morta(janela, sprite)
+                        desenhou_peca_morta = True
         
-        #Carregamento do background
-        janela.fill((0, 0, 0))
-        background = pygame.image.load("assets/images/background.png")
-        janela.blit(background, (0, 0))
-        
-        for i in range(self.colunas):
-            for j in range(self.linhas):
-                peca = self.pega_peca(i, j)
-                if(peca != None):
-                    peca.desenha_peca(janela)
-                    if(peca.morte):
-                        self.tabuleiro[peca.posicao[0]][peca.posicao[1]][4] = None
+            if(desenhou_peca_morta):
+                pygame.time.wait(200)
+
+        if(desenhou_peca_morta): 
+            self.remove_pecas()
+            
 
     #Verifica o vencedor
     def vencedor(self):
@@ -105,16 +114,24 @@ class Tabuleiro:
 
         return None
 
-    # Remove a peça que foi comida
-    def remove(self, pecas):
+    #Mata as peças no tabuleiro
+    def mata_pecas(self, pecas):
         for peca in pecas:
-            # self.tabuleiro[peca.posicao[0]][peca.posicao[1]][4] = None
             if(peca):
                 peca.mata_peca()
                 if(peca.cor == VERMELHO):
                     self.peca1 -= 1
                 elif(peca.cor == BRANCO):
                     self.peca2 -= 1
+
+    #Remove as peças do tabuleiro
+    def remove_pecas(self):
+        for i in range(self.colunas):
+            for j in range(self.linhas):
+                peca = self.pega_peca(i, j)
+                if(peca != None and peca.morte): 
+                    self.tabuleiro[peca.posicao[0]][peca.posicao[1]] = None
+
 
     def pega_movimentos_validos(self, peca):
         movimentos = {}
