@@ -39,14 +39,14 @@ class Peca(pygame.sprite.Sprite):
 
     def desenha_peca(self, janela):
         # pygame.draw.circle(janela, (0, 0, 0), (self.x, self.y), 25)
-        janela.blit(self.cor_peca, (self.x - 27, self.y - 27))
+        janela.blit(self.cor_peca, (self.x - QUADRADO//2, self.y - QUADRADO//2))
         #pygame.draw.circle(janela, self.cor, (self.x, self.y), 20)
         if(self.dama):
-            janela.blit(self.cor_dama, (self.x - 27, self.y - 27))
+            janela.blit(self.cor_dama, (self.x - QUADRADO//2, self.y - QUADRADO//2))
             # pygame.draw.circle(janela, (128, 128, 128), (self.x, self.y), 10)  
 
     def desenha_peca_morta(self, janela, sprite):
-        janela.blit(self.morte_sprite[sprite], (self.x - 27, self.y - 27))
+        janela.blit(self.morte_sprite[sprite], (self.x - QUADRADO//2, self.y - QUADRADO//2))
         pygame.display.update()
 
     def movimenta_peca(self, nova_posicao):
