@@ -12,7 +12,9 @@ except:
     print("O módulo não foi inicializado com sucesso.")
 
 WIDTH = 480
-HEIGHT = 480
+HEIGHT = 640
+# WIDTH = 480
+# HEIGHT = 480
 
 fonte = pygame.font.SysFont(None, 42)
 
@@ -20,14 +22,12 @@ fonte = pygame.font.SysFont(None, 42)
 janela = pygame.display.set_mode((WIDTH, HEIGHT))
 
 # Título
-titulo = 'Jogo de Dama'
+titulo = 'Damas'
 pygame.display.set_caption(titulo)
 
 # Cria o objeto Tabuleiro
 tabuleiro = Tabuleiro(480, 480)
 tabuleiro.atribui_casas()
-
-jogo = Jogo(janela, tabuleiro)
 
 def draw_text(text, font, color, surface, x, y):
     textobj = font.render(text, 1, color)
@@ -46,28 +46,30 @@ def main():
         vermelho = (200, 0, 0)     
 
         janela.fill((0, 0, 0))
-        draw_text(titulo, fonte, (255, 255, 255), janela, WIDTH/2 , HEIGHT/4)
+        draw_text(titulo, fonte, (255, 255, 255), janela, WIDTH/2 , (HEIGHT + TOPO)/4)
 
         mx, my = pygame.mouse.get_pos()
 
-        botao1 = pygame.Rect(WIDTH/2 - 100, HEIGHT/3, 200, 50)
-        botao2 = pygame.Rect(WIDTH/2 - 100, HEIGHT/3 + 100, 200, 50)
+        botao1 = pygame.Rect(WIDTH/2 - 100, (HEIGHT + TOPO)/3, 200, 50)
+        botao2 = pygame.Rect(WIDTH/2 - 100, (HEIGHT + TOPO)/3 + 100, 200, 50)
 
         if (botao1.collidepoint((mx, my))):
             verde = (0, 255 , 0)
 
             if (click):
+                jogo()
                 pass
         if (botao2.collidepoint((mx, my))):
             vermelho = (255, 0, 0)
 
             if (click):
+                pygame.quit()
                 pass
 
         pygame.draw.rect(janela, verde, botao1)
-        draw_text("COMEÇAR", fonte, (0, 0, 0), janela, WIDTH/2 , HEIGHT/3 + 25) #+25 é a metade do tamanho do botão
+        draw_text("COMEÇAR", fonte, (0, 0, 0), janela, WIDTH/2 , (HEIGHT + TOPO)/3 + 25) #+25 é a metade do tamanho do botão
         pygame.draw.rect(janela, vermelho, botao2)
-        draw_text("SAIR", fonte, (0, 0, 0), janela, WIDTH/2, HEIGHT/3 + 125) #+125 é a distancia 100 + 25 do tamanho do botão
+        draw_text("SAIR", fonte, (0, 0, 0), janela, WIDTH/2, (HEIGHT + TOPO)/3 + 125) #+125 é a distancia 100 + 25 do tamanho do botão
 
         click = False
         for event in pygame.event.get():
@@ -88,6 +90,7 @@ def jogo():
     LOOP = True
     clock = pygame.time.Clock()
     FPS = 60
+    jogo = Jogo(janela, tabuleiro)
 
     while LOOP:
         clock.tick(FPS)
@@ -96,7 +99,7 @@ def jogo():
             for event in pygame.event.get():
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    print(event)
+                    # print(event)
                     posx, posy = pygame.mouse.get_pos()
                     x, y = tabuleiro.pega_casa([posx, posy])
 

@@ -39,8 +39,8 @@ class Tabuleiro:
         cont = 1
         for i in range(len(self.tabuleiro)):
             for j in range(len(self.tabuleiro[i])):
-                print(cont)
-                print(self.tabuleiro[i][j])
+                # print(cont)
+                # print(self.tabuleiro[i][j])
                 cont += 1
 
     #Movimenta a peca no tabuleiro
@@ -56,6 +56,7 @@ class Tabuleiro:
     #Retorna em qual casa foi clicada
     def pega_casa(self, pos):
         x, y = pos
+        # print('=-=-=-=-=-=-=-=-= ' + str(pos) + '=-=-=-=-=-=-=-=-= ')
         linha = int(y // (QUADRADO))
         coluna = int(x // (QUADRADO))
 
