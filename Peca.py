@@ -27,7 +27,6 @@ class Peca(pygame.sprite.Sprite):
         self.y_inicial = self.posicao[1]*ALTURA/8
 
         self.x = int((self.x_inicial) + QUADRADO/2)
-        # +30 vem da metade do tamanho do quadrado em px
         self.y = int((self.y_inicial) + QUADRADO/2)
 
     def transforma_dama(self, x):

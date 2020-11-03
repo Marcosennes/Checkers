@@ -2,6 +2,7 @@ import pygame
 import PPlay
 from Tabuleiro import *
 from Jogo import *
+import sys
 
 pygame.font.init()
 
@@ -13,11 +14,14 @@ except:
 WIDTH = 480
 HEIGHT = 480
 
+fonte = pygame.font.SysFont(None, 42)
+
 # Define a janela
 janela = pygame.display.set_mode((WIDTH, HEIGHT))
 
 # Título
-pygame.display.set_caption("Jogo de Dama")
+titulo = 'Jogo de Dama'
+pygame.display.set_caption(titulo)
 
 # Cria o objeto Tabuleiro
 tabuleiro = Tabuleiro(480, 480)
@@ -25,8 +29,61 @@ tabuleiro.atribui_casas()
 
 jogo = Jogo(janela, tabuleiro)
 
+def draw_text(text, font, color, surface, x, y):
+    textobj = font.render(text, 1, color)
+    textrect = textobj.get_rect()
+    textrect.center = (x, y)
+    surface.blit(textobj, textrect)
+
 
 def main():
+    clock = pygame.time.Clock()
+    FPS = 60
+    click = False
+    while True:
+        clock.tick(FPS)   
+        verde = (0, 200 , 0)
+        vermelho = (200, 0, 0)     
+
+        janela.fill((0, 0, 0))
+        draw_text(titulo, fonte, (255, 255, 255), janela, WIDTH/2 , HEIGHT/4)
+
+        mx, my = pygame.mouse.get_pos()
+
+        botao1 = pygame.Rect(WIDTH/2 - 100, HEIGHT/3, 200, 50)
+        botao2 = pygame.Rect(WIDTH/2 - 100, HEIGHT/3 + 100, 200, 50)
+
+        if (botao1.collidepoint((mx, my))):
+            verde = (0, 255 , 0)
+
+            if (click):
+                pass
+        if (botao2.collidepoint((mx, my))):
+            vermelho = (255, 0, 0)
+
+            if (click):
+                pass
+
+        pygame.draw.rect(janela, verde, botao1)
+        draw_text("COMEÇAR", fonte, (0, 0, 0), janela, WIDTH/2 , HEIGHT/3 + 25) #+25 é a metade do tamanho do botão
+        pygame.draw.rect(janela, vermelho, botao2)
+        draw_text("SAIR", fonte, (0, 0, 0), janela, WIDTH/2, HEIGHT/3 + 125) #+125 é a distancia 100 + 25 do tamanho do botão
+
+        click = False
+        for event in pygame.event.get():
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:
+                    click = True
+
+            elif event.type == pygame.QUIT:
+                pygame.quit()
+        
+        pygame.display.update()
+
+
+
+def jogo():
 
     LOOP = True
     clock = pygame.time.Clock()
@@ -71,6 +128,5 @@ def main():
             pygame.display.update()
 
     pygame.quit()
-
 
 main()

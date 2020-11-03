@@ -6,7 +6,7 @@ class Jogo:
     def __init__(self, janela, tabuleiro):
         self.selecionado = None
         self.tabuleiro = tabuleiro
-        self.turno = VERMELHO
+        self.turno = BRANCO
         self.movimentos_validos = {}
         self.janela = janela
     
@@ -18,7 +18,7 @@ class Jogo:
     def reseta(self):        
         self.selecionado = None
         self.tabuleiro = tabuleiro
-        self.turno = VERMELHO
+        self.turno = BRANCO
         self.movimentos_validos = {}
 
     def muda_turno(self):
