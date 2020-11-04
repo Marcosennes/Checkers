@@ -43,6 +43,12 @@ class Tabuleiro:
                 # print(self.tabuleiro[i][j])
                 cont += 1
 
+    # def conta_pecas(self, cor):
+    #     for i in range(len(self.tabuleiro)):
+    #         for j in range(len(self.tabuleiro[i])):
+    #             if(self.tabuleiro[i][j] != None):
+    #                 print(self.tabuleiro[i][j])
+
     #Movimenta a peca no tabuleiro
     def movimenta(self, peca, x, y):
         self.tabuleiro[peca.posicao[0]][peca.posicao[1]], self.tabuleiro[x][y] = self.tabuleiro[x][y], self.tabuleiro[peca.posicao[0]][peca.posicao[1]]
@@ -56,7 +62,6 @@ class Tabuleiro:
     #Retorna em qual casa foi clicada
     def pega_casa(self, pos):
         x, y = pos
-        # print('=-=-=-=-=-=-=-=-= ' + str(pos) + '=-=-=-=-=-=-=-=-= ')
         linha = int(y // (QUADRADO))
         coluna = int(x // (QUADRADO))
 
@@ -77,7 +82,7 @@ class Tabuleiro:
         for sprite in range(3):#3 por causa da animação da morte da peça
             #Carregamento do background
             janela.fill((0, 0, 0))
-            background = pygame.image.load("assets/images/background.png")
+            background = pygame.image.load("assets/images/background-with-counter.jpg")
             janela.blit(background, (0, 0))
             
             #desenha as peças vivas

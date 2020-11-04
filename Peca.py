@@ -24,7 +24,7 @@ class Peca(pygame.sprite.Sprite):
     # Calcula a posição em que cada peça vai ficar no tabuleiro
     def calcula_pos(self):
         self.x_inicial = self.posicao[0]*LARGURA/8
-        self.y_inicial = self.posicao[1]*ALTURA/8
+        self.y_inicial = self.posicao[1]*ALTURA/8 + TOPO
 
         self.x = int((self.x_inicial) + QUADRADO/2)
         self.y = int((self.y_inicial) + QUADRADO/2)
