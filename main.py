@@ -94,7 +94,6 @@ def jogo():
 
     while LOOP:
         clock.tick(FPS)
-        # janela.blit(pygame.image.load("assets/images/peca_vermelha_miniatura.png"), (0, 0))
         if(jogo.vencedor() == None):
             for event in pygame.event.get():
                 # tabuleiro.conta_pecas(VERMELHO)

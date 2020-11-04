@@ -62,7 +62,7 @@ class Tabuleiro:
     #Retorna em qual casa foi clicada
     def pega_casa(self, pos):
         x, y = pos
-        linha = int(y // (QUADRADO))
+        linha = int((y) // (QUADRADO))
         coluna = int(x // (QUADRADO))
 
         return coluna, linha
