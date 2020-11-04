@@ -82,7 +82,7 @@ class Tabuleiro:
         for sprite in range(3):#3 por causa da animação da morte da peça
             #Carregamento do background
             janela.fill((0, 0, 0))
-            background = pygame.image.load("assets/images/background-with-counter.jpg")
+            background = pygame.image.load("assets/images/background.png")
             janela.blit(background, (0, 0))
             
             #desenha as peças vivas

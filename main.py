@@ -12,9 +12,7 @@ except:
     print("O módulo não foi inicializado com sucesso.")
 
 WIDTH = 480
-HEIGHT = 640
-# WIDTH = 480
-# HEIGHT = 480
+HEIGHT = 480
 
 fonte = pygame.font.SysFont(None, 42)
 
@@ -46,12 +44,12 @@ def main():
         vermelho = (200, 0, 0)     
 
         janela.fill((0, 0, 0))
-        draw_text(titulo, fonte, (255, 255, 255), janela, WIDTH/2 , (HEIGHT + TOPO)/4)
+        draw_text(titulo, fonte, (255, 255, 255), janela, WIDTH/2 , (HEIGHT)/4)
 
         mx, my = pygame.mouse.get_pos()
 
-        botao1 = pygame.Rect(WIDTH/2 - 100, (HEIGHT + TOPO)/3, 200, 50)
-        botao2 = pygame.Rect(WIDTH/2 - 100, (HEIGHT + TOPO)/3 + 100, 200, 50)
+        botao1 = pygame.Rect(WIDTH/2 - 100, (HEIGHT)/3, 200, 50)
+        botao2 = pygame.Rect(WIDTH/2 - 100, (HEIGHT)/3 + 100, 200, 50)
 
         if (botao1.collidepoint((mx, my))):
             verde = (0, 255 , 0)
@@ -67,9 +65,9 @@ def main():
                 pass
 
         pygame.draw.rect(janela, verde, botao1)
-        draw_text("COMEÇAR", fonte, (0, 0, 0), janela, WIDTH/2 , (HEIGHT + TOPO)/3 + 25) #+25 é a metade do tamanho do botão
+        draw_text("COMEÇAR", fonte, (0, 0, 0), janela, WIDTH/2 , (HEIGHT)/3 + 25) #+25 é a metade do tamanho do botão
         pygame.draw.rect(janela, vermelho, botao2)
-        draw_text("SAIR", fonte, (0, 0, 0), janela, WIDTH/2, (HEIGHT + TOPO)/3 + 125) #+125 é a distancia 100 + 25 do tamanho do botão
+        draw_text("SAIR", fonte, (0, 0, 0), janela, WIDTH/2, (HEIGHT)/3 + 125) #+125 é a distancia 100 + 25 do tamanho do botão
 
         click = False
         for event in pygame.event.get():
