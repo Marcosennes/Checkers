@@ -138,7 +138,6 @@ class Tabuleiro:
                 if(peca != None and peca.morte): 
                     self.tabuleiro[peca.posicao[0]][peca.posicao[1]] = None
 
-
     def pega_movimentos_validos(self, peca):
         movimentos = {}
         esquerda = peca.posicao[0] - 1
@@ -151,7 +150,7 @@ class Tabuleiro:
         if(peca.cor == BRANCO or peca.dama):
             movimentos.update(self._diagonal_esquerda(linha - 1, max(linha - 3, -1), -1, peca.cor, esquerda))
             movimentos.update(self._diagonal_direita(linha - 1, max(linha - 3, -1), -1, peca.cor, direita))
-        
+
         return movimentos
 
     def _diagonal_esquerda(self, inicio, parada, passo, cor, esquerda, pulo=[]):
@@ -160,7 +159,7 @@ class Tabuleiro:
         for r in range(inicio, parada, passo):
             if esquerda < 0:
                 break
-            
+
             atual = self.pega_peca(esquerda, r)
             if not atual:
                 if pulo and not ultimo:
@@ -169,10 +168,10 @@ class Tabuleiro:
                     movimentos[(esquerda, r)] = ultimo + pulo
                 else:
                     movimentos[(esquerda, r)] = ultimo
-                
+
                 if ultimo:
                     if passo == -1:
-                        linha = max(r-3, 0)
+                        linha = max(r-3, -1)
                     else:
                         linha = min(r+r, LINHA)
                     movimentos.update(self._diagonal_esquerda(r+passo, linha, passo, cor, esquerda-1, pulo=ultimo))
@@ -184,7 +183,7 @@ class Tabuleiro:
                 ultimo = [atual]
 
             esquerda -= 1
-        
+
         return movimentos
 
     def _diagonal_direita(self, inicio, parada, passo, cor, direita, pulo=[]):
@@ -193,7 +192,7 @@ class Tabuleiro:
         for r in range(inicio, parada, passo):
             if direita >= COLUNA:
                 break
-            
+
             atual = self.pega_peca(direita, r)
             if not atual:
                 if pulo and not ultimo:
@@ -202,10 +201,10 @@ class Tabuleiro:
                     movimentos[(direita, r)] = ultimo + pulo
                 else:
                     movimentos[(direita, r)] = ultimo
-                
+
                 if ultimo:
                     if passo == -1:
-                        linha = max(r-3, 0)
+                        linha = max(r-3, -1)
                     else:
                         linha = min(r+r, LINHA)
                     movimentos.update(self._diagonal_esquerda(r+passo, linha, passo, cor, direita-1,pulo=ultimo))
@@ -217,5 +216,5 @@ class Tabuleiro:
                 ultimo = [atual]
 
             direita += 1
-        
-        return movimentos
+
+        return movimentos 

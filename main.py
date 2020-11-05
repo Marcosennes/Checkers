@@ -48,26 +48,24 @@ def main():
 
         mx, my = pygame.mouse.get_pos()
 
-        botao1 = pygame.Rect(WIDTH/2 - 100, (HEIGHT)/3, 200, 50)
-        botao2 = pygame.Rect(WIDTH/2 - 100, (HEIGHT)/3 + 100, 200, 50)
+        botao1 = pygame.Rect(WIDTH/2 - 100, (HEIGHT)/3 + 40, 200, 50)
+        botao2 = pygame.Rect(WIDTH/2 - 100, (HEIGHT)/3 + 140, 200, 50)
 
         if (botao1.collidepoint((mx, my))):
             verde = (0, 255 , 0)
 
             if (click):
                 jogo()
-                pass
         if (botao2.collidepoint((mx, my))):
             vermelho = (255, 0, 0)
 
             if (click):
                 pygame.quit()
-                pass
 
         pygame.draw.rect(janela, verde, botao1)
-        draw_text("COMEÇAR", fonte, (0, 0, 0), janela, WIDTH/2 , (HEIGHT)/3 + 25) #+25 é a metade do tamanho do botão
+        draw_text("COMEÇAR", fonte, (0, 0, 0), janela, WIDTH/2 , (HEIGHT)/3 + 65) #+25 é a metade do tamanho do botão
         pygame.draw.rect(janela, vermelho, botao2)
-        draw_text("SAIR", fonte, (0, 0, 0), janela, WIDTH/2, (HEIGHT)/3 + 125) #+125 é a distancia 100 + 25 do tamanho do botão
+        draw_text("SAIR", fonte, (0, 0, 0), janela, WIDTH/2, (HEIGHT)/3 + 165) #+125 é a distancia 100 + 25 do tamanho do botão
 
         click = False
         for event in pygame.event.get():
