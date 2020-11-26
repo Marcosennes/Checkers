@@ -1,7 +1,6 @@
 import pygame
 from Tabuleiro import Tabuleiro
 from constantes import*
-
 class Jogo:
     def __init__(self, janela, tabuleiro):
         self.selecionado = None
@@ -39,7 +38,7 @@ class Jogo:
                 self.seleciona(coluna, linha)
         
         peca = self.tabuleiro.pega_peca(coluna, linha)
-        if(peca and peca.cor == self.turno):
+        if(peca and peca.cor == BRANCO):
             self.selecionado = peca
             self.movimentos_validos = self.tabuleiro.pega_movimentos_validos(peca)
             return True

@@ -1,9 +1,8 @@
 import pygame
-import PPlay
 from Tabuleiro import *
 from Jogo import *
 import sys
-
+from mm import *
 pygame.font.init()
 
 try:
@@ -24,8 +23,8 @@ titulo = 'Damas'
 pygame.display.set_caption(titulo)
 
 # Cria o objeto Tabuleiro
-tabuleiro = Tabuleiro(480, 480)
-tabuleiro.atribui_casas()
+#tabuleiro = Tabuleiro(480, 480)
+#tabuleiro.atribui_casas()
 
 def draw_text(text, font, color, surface, x, y):
     textobj = font.render(text, 1, color)
@@ -86,25 +85,49 @@ def jogo():
     LOOP = True
     clock = pygame.time.Clock()
     FPS = 60
-    jogo = Jogo(janela, tabuleiro)
 
+    tabuleiro = Tabuleiro(480, 480)
+    tabuleiro.atribui_casas()
+    
+    jogo = Jogo(janela, tabuleiro)
+    trn = 0
     while LOOP:
         clock.tick(FPS)
         if(jogo.vencedor() == None):
-            for event in pygame.event.get():
-                # tabuleiro.conta_pecas(VERMELHO)
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    # print(event)
-                    posx, posy = pygame.mouse.get_pos()
-                    x, y = tabuleiro.pega_casa([posx, posy])
+            if jogo.turno == VERMELHO:
+                tab = minmax(tabuleiro, 1, True)[1]
+                #for p in tabuleiro.pecas_por_cor(VERMELHO):
+                #  print(p.posicao[::-1])
+                #print(tab.tabuleiro == tabuleiro.tabuleiro)
+                jogo.tabuleiro = tab
+                tabuleiro = tab
+                jogo.muda_turno()
+                jogo.atualiza()
+                
+                print('-- VERMELHO --')
+                for p in tab.pecas_por_cor(VERMELHO):
+                  print(p.posicao[::-1])
+                print('-- BRANCO --')
+                for p in tab.pecas_por_cor(BRANCO):
+                  print(p.posicao[::-1])
 
-                    jogo.seleciona(x, y)
+                print(f'Turno {jogo.turno}')
+                #input('Continue...')
+            else:
+                for event in pygame.event.get():
+                    # tabuleiro.conta_pecas(VERMELHO)
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        # print(event)
+                        posx, posy = pygame.mouse.get_pos()
+                        x, y = tabuleiro.pega_casa([posx, posy])
 
-                elif event.type == pygame.QUIT:
-                    LOOP = False
+                        jogo.seleciona(x, y)
+
+                    elif event.type == pygame.QUIT:
+                        LOOP = False
 
             jogo.atualiza()
-        
+             
         else:
             tabuleiro.desenha_tabuleiro(janela)
             pygame.font.init()

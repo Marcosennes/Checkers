@@ -13,6 +13,16 @@ class Tabuleiro:
 
         self.peca1 = self.peca2 = 12
 
+    #peca1 = vermelho?
+    def pontos(self):
+        return self.peca1 - self.peca2
+
+    def pecas_por_cor(self, cor):
+      pecas = []
+      for linha in self.tabuleiro:
+        for p in linha:
+          if p != None and p.cor == cor: pecas.append(p)
+      return pecas
 
     #Coloca as peças nas casas
     def atribui_casas(self):
@@ -150,7 +160,7 @@ class Tabuleiro:
         if(peca.cor == BRANCO or peca.dama):
             movimentos.update(self._diagonal_esquerda(linha - 1, max(linha - 3, -1), -1, peca.cor, esquerda))
             movimentos.update(self._diagonal_direita(linha - 1, max(linha - 3, -1), -1, peca.cor, direita))
-
+       
         return movimentos
 
     def _diagonal_esquerda(self, inicio, parada, passo, cor, esquerda, pulo=[]):
